@@ -1,29 +1,18 @@
-﻿
-var stack = new Stack<double>();
-stack.Push(4.5);
-stack.Push(43);
-stack.Push(333.6);
+﻿using MotoApp.Data;
+using MotoApp.Entities;
+using MotoApp.Repositories;
 
-var stackString = new Stack<string>();
-stackString.Push("parch");
-stackString.Push("parch2");
-stackString.Push("parch3");
+var employeeRepository = new SqlRepository<Employee>(new MotoAppDbContext());
 
-double sum = 0.0;
+employeeRepository.Add(new Employee { FirstName = "Jarosław" });
+employeeRepository.Add(new Employee { FirstName = "Zbigniew" });
+employeeRepository.Add(new Employee { FirstName = "Maciej" });
+employeeRepository.Save();
 
-while (stack.Count > 0)
+GetEmployeeById(employeeRepository);
+
+static void GetEmployeeById(IRepository<Employee> employeeRepository)
 {
-    double item = stack.Pop();
-    Console.WriteLine($"Item: {item}");
-    sum += item;
+    var employee = employeeRepository.GetById(2);
+    Console.WriteLine(employee.ToString());
 }
-
-while (stackString.Count > 0)
-{
-    string item = stackString.Pop();
-    Console.WriteLine($"Item: {item}");
-}
-
-
-
-Console.WriteLine($"Sum: {sum}");

@@ -4,15 +4,31 @@ using MotoApp.Repositories;
 
 var employeeRepository = new SqlRepository<Employee>(new MotoAppDbContext());
 
-employeeRepository.Add(new Employee { FirstName = "Jarosław" });
-employeeRepository.Add(new Employee { FirstName = "Zbigniew" });
-employeeRepository.Add(new Employee { FirstName = "Maciej" });
-employeeRepository.Save();
+AddEmployees(employeeRepository);
+AddManagers(employeeRepository);
+WriteAllToConsole(employeeRepository);
 
-GetEmployeeById(employeeRepository);
-
-static void GetEmployeeById(IRepository<Employee> employeeRepository)
+static void AddEmployees(IRepository<Employee> employeeRepository)
 {
-    var employee = employeeRepository.GetById(2);
-    Console.WriteLine(employee.ToString());
+    employeeRepository.Add(new Employee { FirstName = "Jarosław" });
+    employeeRepository.Add(new Employee { FirstName = "Zbigniew" });
+    employeeRepository.Add(new Employee { FirstName = "Mateusz" });
+    employeeRepository.Save();
+}
+
+static void AddManagers(IWriteRepository<Manager> managerRepository)
+{
+    managerRepository.Add(new Manager { FirstName = "Maciej" });
+    managerRepository.Add(new Manager { FirstName = "Mariusz" });
+    managerRepository.Save();
+}
+
+
+static void WriteAllToConsole(IReadRepository<IEntity> repository)
+{
+    var items = repository.GetAll();
+    foreach (var item in items)
+    {
+        Console.WriteLine(item);
+    }
 }
